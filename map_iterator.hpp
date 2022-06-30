@@ -63,7 +63,7 @@ namespace ft
 
 			map_iterator& operator=(const map_iterator& iter)
 			{
-				if (iter = *this)
+				if (iter == *this)
 					return *this;
 				this->_p = iter.base();
 				return *this;
