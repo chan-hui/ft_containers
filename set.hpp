@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.hpp                                            :+:      :+:    :+:   */
+/*   set.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhuil <chanhuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/15 23:18:34 by chanhuil          #+#    #+#             */
-/*   Updated: 2022/06/15 23:18:34 by chanhuil         ###   ########.fr       */
+/*   Created: 2022/07/01 10:31:04 by chanhuil          #+#    #+#             */
+/*   Updated: 2022/07/01 10:31:04 by chanhuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAP_HPP
-# define MAP_HPP
+#ifndef SET_HPP
+# define SET_HPP
 
 # include <memory>
 # include <functional>
@@ -21,27 +21,14 @@
 
 namespace ft
 {
-	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<pair<const Key,T> > >
-	class map
+	template < class T, class Compare = std::less<T>, class Alloc = std::allocator<T> >
+	class set
 	{
 		public:
-			typedef Key																		key_type;
-			typedef T																		mapped_type;
-			typedef pair<const key_type,mapped_type>										value_type;
+			typedef T																		key_type;
+			typedef T																		value_type;
 			typedef Compare																	key_compare;
-			class value_compare : std::binary_function<value_type,value_type,bool>
-			{
-				friend class map<key_type, mapped_type, key_compare, Alloc>;
-
-				protected:
-					Compare comp;
-					value_compare (Compare c) : comp(c) {}
-				public:
-					bool operator() (const value_type& x, const value_type& y) const
-					{
-						return comp(x.first, y.first);
-					}
-			};
+			typedef Compare																	value_compare;
 			typedef Alloc																	allocator_type;
 			typedef typename allocator_type::reference										reference;
 			typedef typename allocator_type::const_reference								const_reference;
@@ -56,7 +43,7 @@ namespace ft
 
 			typedef	typename ft::red_black_tree<value_type, value_compare, allocator_type>	tree_type;
 
-			explicit map (const key_compare& comp = key_compare(),
+			explicit set (const key_compare& comp = key_compare(),
             	const allocator_type& alloc = allocator_type())
 				:
 				_tree(tree_type(comp, alloc)),
@@ -64,7 +51,7 @@ namespace ft
 			{}
 
 			template <class InputIterator>
-			map (InputIterator first, InputIterator last,
+			set (InputIterator first, InputIterator last,
 				const key_compare& comp = key_compare(),
 				const allocator_type& alloc = allocator_type())
 				:
@@ -72,15 +59,15 @@ namespace ft
 				_comp(comp)
 			{}
 
-			map (const map& x)
+			set (const set& x)
 			{
 				*this = x;
 			}
 
-			~map()
+			~set()
 			{}
 
-			map& operator= (const map& x)
+			set& operator= (const set& x)
 			{
 				if (x == *this)
 					return *this;
@@ -141,11 +128,6 @@ namespace ft
 			size_type max_size() const
 			{
 				return (_tree.max_size());
-			}
-
-			mapped_type& operator[] (const key_type& k)
-			{
-				return (*((this->insert(ft::make_pair(k,mapped_type()))).first)).second;
 			}
 
 			pair<iterator, bool> insert(const value_type& val)

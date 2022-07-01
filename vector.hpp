@@ -63,7 +63,7 @@ namespace ft
 		}
 
 		template <class InputIterator>
-        vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+        vector (typename enable_if< !is_integral<InputIterator>::value, InputIterator >::type first, InputIterator last, const allocator_type& alloc = allocator_type())
 			:
 			_alloc(alloc),
 			_begin(ft_nullptr),
@@ -126,7 +126,7 @@ namespace ft
 		void resize (size_type n, value_type val = value_type())
 		{
 			if (n > max_size())
-				//exception
+				throw std::overflow_error("vector is too big");
 			else if (n < size())
 			{
 				while (size() > n)
@@ -154,7 +154,7 @@ namespace ft
 		void reserve (size_type n)
 		{
 			if (n > max_size())
-				//exception
+				throw std::overflow_error("vector is too big");
 			else if (n > capacity())
 			{
 				pointer temp_begin = _begin;
@@ -183,14 +183,14 @@ namespace ft
 		reference at (size_type n)
 		{
 			if (n >= size())
-				//exception
+				throw std::out_of_range("vector out of range");
 			return (*this)[n];
 		}
 
 		const_reference at (size_type n) const
 		{
 			if (n >= size())
-				//exception
+				throw std::out_of_range("vector out of range");
 			return (*this)[n];
 		}
 
@@ -201,7 +201,7 @@ namespace ft
 		const_reference back() const {return *(_end - 1);}
 
 		template <class InputIterator>
-		void assign (InputIterator first, InputIterator last)
+		void assign (typename enable_if< !is_integral<InputIterator>::value, InputIterator >::type first, InputIterator last)
 		{
 			// if (ii != iter)
 			// 	exception;
@@ -320,7 +320,7 @@ namespace ft
 			if (n == 0)
 				return ;
 			if (n > max_size())
-				//exception
+				throw std::overflow_error("vector is too big");
 			if (capacity() - size() >= n)
 			{
 				for (pointer i = _end + n - 1;i != &(*position) + n - 1;i--)
@@ -362,7 +362,7 @@ namespace ft
 		}
 
 		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last)
+		void insert (iterator position, typename enable_if< !is_integral<InputIterator>::value, InputIterator >::type first, InputIterator last)
 		{
 			// if (ii != iter)
 			// 	exception;
