@@ -6,7 +6,7 @@
 /*   By: chanhuil <chanhuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 04:51:59 by chanhuil          #+#    #+#             */
-/*   Updated: 2022/06/17 04:51:59 by chanhuil         ###   ########.fr       */
+/*   Updated: 2022/07/04 14:35:49 by chanhuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,11 +200,11 @@ namespace ft
 				temp->left = ft_nullptr;
 				temp->right = ft_nullptr;
 				if (position == begin() && position != end() && _comp(val, *position))
-					_insert(temp, minimum(_root));
+					_insert_at(temp, minimum(_root));
 				else if (position == end() && position != begin() && _comp(*(--position), val))
-					_insert(temp, _end->p);
+					_insert_at(temp, _end->p);
 				else
-					_insert(temp, _root);
+					_insert_at(temp, _root);
 				_insert_fix(temp);
 				_size++;
 				node_pointer temp_end = maximum(_root);
@@ -214,7 +214,7 @@ namespace ft
 			}
 
 			template <class InputIterator>
-			void insert (ft::enable_if< !ft::is_integral<InputIterator>::value, InputIterator >::type first, InputIterator last)
+			void insert (typename ft::enable_if< !ft::is_integral<InputIterator>::value, InputIterator >::type first, InputIterator last)
 			{
 				for (;first != last;first++)
 					insert(*first);
@@ -266,7 +266,7 @@ namespace ft
 				}
 			}
 
-			size_type erase (const key_type& k)
+			size_type erase (const value_type& k)
 			{
 				node_pointer temp = find_node(k, _root);
 				if (temp)
@@ -330,14 +330,14 @@ namespace ft
 				return const_iterator(find_node(k, _root));
 			}
 
-			size_type count (const key_type& k) const
+			size_type count (const value_type& k) const
 			{
 				if (find(k) == end())
 					return 0;
 				return 1;
 			}
 
-			iterator lower_bound (const key_type& k)
+			iterator lower_bound (const value_type& k)
 			{
 				for (iterator i=begin();i != end();i++)
 				{
@@ -347,7 +347,7 @@ namespace ft
 				return (end());
 			}
 
-			const_iterator lower_bound (const key_type& k) const
+			const_iterator lower_bound (const value_type& k) const
 			{
 				for (const_iterator i=begin();i != end();i++)
 				{
@@ -357,7 +357,7 @@ namespace ft
 				return (end());
 			}
 
-			iterator upper_bound (const key_type& k)
+			iterator upper_bound (const value_type& k)
 			{
 				for (iterator i=begin();i != end();i++)
 				{
@@ -367,7 +367,7 @@ namespace ft
 				return (end());
 			}
 
-			const_iterator upper_bound (const key_type& k) const
+			const_iterator upper_bound (const value_type& k) const
 			{
 				for (const_iterator i=begin();i != end();i++)
 				{
@@ -377,7 +377,7 @@ namespace ft
 				return (end());
 			}
 
-			pair<iterator,iterator>	equal_range (const key_type& k)
+			pair<iterator,iterator>	equal_range (const value_type& k)
 			{
 				return ft::make_pair(lower_bound(k), upper_bound(k));
 			}
@@ -459,7 +459,16 @@ namespace ft
 				n->p = y;
 			}
 
-			node_pointer _insert(node_pointer n, node_pointer pos = _root)
+			node_pointer _insert(node_pointer n)
+			{
+				if (_root == _end)
+					_root = n;
+				else
+					_insert_to(_root, n);
+				return n;
+			}
+
+			node_pointer _insert_at(node_pointer n, node_pointer pos)
 			{
 				if (_root == _end)
 					_root = n;
@@ -577,7 +586,7 @@ namespace ft
 								}
 								n->p->black = true;
 								n->p->p->black = false;
-								rotate_right(node->p->p);
+								rotate_right(n->p->p);
 							}
 							else
 							{
@@ -599,7 +608,7 @@ namespace ft
 								}
 								n->p->black = true;
 								n->p->p->black = false;
-								rotate_left(node->p->p);
+								rotate_left(n->p->p);
 							}
 							else
 							{

@@ -6,7 +6,7 @@
 /*   By: chanhuil <chanhuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 10:31:04 by chanhuil          #+#    #+#             */
-/*   Updated: 2022/07/01 10:31:04 by chanhuil         ###   ########.fr       */
+/*   Updated: 2022/07/04 14:35:07 by chanhuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ namespace ft
 
 			size_type erase(const key_type& k)
 			{
-				return (_tree.erase(ft::make_pair(k, mapped_type())));
+				return (_tree.erase(k));
 			}
 
 			void erase(iterator first, iterator last)
@@ -161,7 +161,7 @@ namespace ft
 				_tree.erase(first, last);
 			}
 
-			void swap (map& x)
+			void swap (set& x)
 			{
 				key_compare temp_comp = x._comp;
 				x._comp = _comp;
@@ -187,47 +187,47 @@ namespace ft
 
 			iterator find (const key_type& k)
 			{
-				return _tree.find(make_pair(k, mapped_type()));
+				return _tree.find(k);
 			}
 
 			const_iterator find (const key_type& k) const
 			{
-				return _tree.find(make_pair(k, mapped_type()));
+				return _tree.find(k);
 			}
 
 			size_type count (const key_type& k) const
 			{
-				return _tree.count(make_pair(k, mapped_type()));
+				return _tree.count(k);
 			}
 
 			iterator lower_bound (const key_type& k)
 			{
-				return _tree.lower_bound(make_pair(k, mapped_type()));
+				return _tree.lower_bound(k);
 			}
 
 			const_iterator lower_bound (const key_type& k) const
 			{
-				return _tree.lower_bound(make_pair(k, mapped_type()));
+				return _tree.lower_bound(k);
 			}
 
 			iterator upper_bound (const key_type& k)
 			{
-				return _tree.upper_bound(make_pair(k, mapped_type()));
+				return _tree.upper_bound(k);
 			}
 
 			const_iterator upper_bound (const key_type& k) const
 			{
-				return _tree.upper_bound(make_pair(k, mapped_type()));
+				return _tree.upper_bound(k);
 			}
 
 			pair<const_iterator,const_iterator> equal_range (const key_type& k) const
 			{
-				return _tree.equal_range(make_pair(k, mapped_type()));
+				return _tree.equal_range(k);
 			}
 
 			pair<iterator,iterator>             equal_range (const key_type& k)
 			{
-				return _tree.equal_range(make_pair(k, mapped_type()));
+				return _tree.equal_range(k);
 			}
 
 			allocator_type get_allocator() const
