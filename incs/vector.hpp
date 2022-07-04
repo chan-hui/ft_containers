@@ -14,9 +14,9 @@
 # define VECTOR_HPP
 
 # include <memory>
-# include "./utils.hpp"
-# include "./random_access_iterator.hpp"
-# include "./reverse_iterator.hpp"
+# include "./utils/utils.hpp"
+# include "./utils/random_access_iterator.hpp"
+# include "./utils/reverse_iterator.hpp"
 
 namespace ft
 {
