@@ -6,7 +6,7 @@
 /*   By: chanhuil <chanhuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/25 19:21:07 by chanhuil          #+#    #+#             */
-/*   Updated: 2022/07/04 14:26:48 by chanhuil         ###   ########.fr       */
+/*   Updated: 2022/07/04 16:11:26 by chanhuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ namespace ft
 			_begin = _alloc.allocate(n);
 			_end = _begin;
 			_capacity = _begin + n;
-			for (int i=0;i<n;i++)
+			for (size_type i=0;i<n;i++)
 			{
 				_alloc.construct(_end, val);
 				_end++;
@@ -76,7 +76,7 @@ namespace ft
 			_begin = _alloc.allocate(n);
 			_end = _begin;
 			_capacity = _begin + n;
-			for (int i=0;i<n;i++)
+			for (difference_type i=0;i<n;i++)
 			{
 				_alloc.construct(_end, *first);
 				_end++;
@@ -240,7 +240,7 @@ namespace ft
 				return ;
 			if (capacity() >= n)
 			{
-				for (int i=0;i<n;i++,_end++)
+				for (size_type i=0;i<n;i++,_end++)
 				{
 					_alloc.construct(_end, val);
 				}
@@ -254,7 +254,7 @@ namespace ft
 				_end = _begin;
 				_capacity = _begin + n;
 
-				for (int i=0;i<n;i++,_end++)
+				for (size_type i=0;i<n;i++,_end++)
 				{
 					_alloc.construct(_end, val);
 				}
@@ -289,7 +289,7 @@ namespace ft
 			}
 			else
 			{
-				int new_cap = capacity() == 0 ? 1 : capacity() * 2;
+				size_type new_cap = capacity() == 0 ? 1 : capacity() * 2;
 				pointer temp_begin = _alloc.allocate(new_cap);
 				pointer temp_end = temp_begin;
 				pointer temp_capacity = temp_begin + new_cap;
@@ -331,7 +331,7 @@ namespace ft
 			}
 			else
 			{
-				int new_cap = capacity() == 0 ? 1 : capacity() * 2;
+				size_type new_cap = capacity() == 0 ? 1 : capacity() * 2;
 				if (n + size() > new_cap)
 					new_cap = n + size();
 				pointer temp_begin = _alloc.allocate(new_cap);
@@ -342,7 +342,7 @@ namespace ft
 				{
 					_alloc.construct(temp_end, *i);
 				}
-				for (int i=0;i<n;i++)
+				for (size_type i=0;i<n;i++)
 				{
 					_alloc.construct(temp_end++, val);
 				}
@@ -380,7 +380,7 @@ namespace ft
 			}
 			else
 			{
-				int new_cap = capacity() == 0 ? 1 : capacity() * 2;
+				size_type new_cap = capacity() == 0 ? 1 : capacity() * 2;
 				if (n + size() > new_cap)
 					new_cap = n + size();
 				pointer temp_begin = _alloc.allocate(new_cap);
@@ -429,7 +429,7 @@ namespace ft
 		iterator erase (iterator first, iterator last)
 		{
 			pointer temp = &(*first);
-			for (pointer i = temp;i != last;i++)
+			for (pointer i = temp;i != &(*last);i++)
 				_alloc.destroy(i);
 			if (&(*last) != _end)
 			{

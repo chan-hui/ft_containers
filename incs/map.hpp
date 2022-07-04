@@ -6,7 +6,7 @@
 /*   By: chanhuil <chanhuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 23:18:34 by chanhuil          #+#    #+#             */
-/*   Updated: 2022/06/15 23:18:34 by chanhuil         ###   ########.fr       */
+/*   Updated: 2022/07/04 18:54:47 by chanhuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ namespace ft
 
 			map& operator= (const map& x)
 			{
-				if (x == *this)
-					return *this;
+				// if (x == *this)
+				// 	return *this;
 				_tree = x._tree;
 				_comp = x._comp;
 			}

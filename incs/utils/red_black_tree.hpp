@@ -6,7 +6,7 @@
 /*   By: chanhuil <chanhuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 04:51:59 by chanhuil          #+#    #+#             */
-/*   Updated: 2022/07/04 14:35:49 by chanhuil         ###   ########.fr       */
+/*   Updated: 2022/07/04 18:55:09 by chanhuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,16 @@ namespace ft
 			}
 
 			red_black_tree(const red_black_tree& tree)
+				:
+				_comp(value_compare())
 			{
 				*this = tree;
 			}
 
 			red_black_tree& operator=(const red_black_tree& tree)
 			{
-				if (tree == *this)
-					return *this;
+				// if (tree == *this)
+				// 	return *this;
 				_alloc = tree._alloc;
 				_nalloc = tree._nalloc;
 				_comp = tree._comp;
