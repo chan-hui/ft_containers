@@ -82,8 +82,8 @@ namespace ft
 
 			map& operator= (const map& x)
 			{
-				// if (x == *this)
-				// 	return *this;
+				if (x == *this)
+					return *this;
 				_tree = x._tree;
 				_comp = x._comp;
 			}
@@ -256,6 +256,42 @@ namespace ft
 			tree_type			_tree;
 			key_compare			_comp;
 	};
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator==(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
+	{
+		return (lhs._tree == rhs._tree);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator!=(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
+	{
+		return !(lhs == rhs);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator<(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
+	{
+		return (lhs.tree < rhs.tree);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator<=(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
+	{
+		return !(rhs.tree < lhs.tree);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator>(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
+	{
+		return (rhs.tree < lhs.tree);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator>=(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
+	{
+		return !(lhs.tree < rhs.tree);
+	}
 }
 
 #endif

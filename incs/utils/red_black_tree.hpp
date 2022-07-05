@@ -89,8 +89,8 @@ namespace ft
 
 			red_black_tree& operator=(const red_black_tree& tree)
 			{
-				// if (tree == *this)
-				// 	return *this;
+				if (tree == *this)
+					return *this;
 				_alloc = tree._alloc;
 				_nalloc = tree._nalloc;
 				_comp = tree._comp;
@@ -695,6 +695,18 @@ namespace ft
 				}
 			}
 	};
+
+	template<class T, class Compare, class Alloc>
+	bool operator==(const red_black_tree<T, Compare, Alloc>& lhs, const red_black_tree<T, Compare, Alloc>& rhs)
+	{
+		return (lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin()));
+	}
+
+	template<class T, class Compare, class Alloc>
+	bool operator<(const red_black_tree<T, Compare, Alloc>& lhs, const red_black_tree<T, Compare, Alloc>& rhs)
+	{
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+	}
 }
 
 #endif
