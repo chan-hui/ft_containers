@@ -107,6 +107,10 @@ namespace ft
 			{
 				return _p[n];
 			}
+
+			operator random_access_iterator<const T> () const
+            { return (random_access_iterator<const T>(this->_p)); }
+
 		private:
 			pointer _p;
 	};

@@ -34,9 +34,9 @@ namespace ft
 				friend class map<key_type, mapped_type, key_compare, Alloc>;
 
 				protected:
-					Compare comp;
-					value_compare (Compare c) : comp(c) {}
+					key_compare comp;
 				public:
+					value_compare (key_compare c) : comp(c) {}
 					bool operator() (const value_type& x, const value_type& y) const
 					{
 						return comp(x.first, y.first);
