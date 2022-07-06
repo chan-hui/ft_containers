@@ -238,6 +238,42 @@ namespace ft
 			tree_type			_tree;
 			key_compare			_comp;
 	};
+
+	template <class T, class Compare, class Alloc>
+	bool operator==(const set<T, Compare, Alloc>& lhs, const set<T, Compare, Alloc>& rhs)
+	{
+		return (lhs._tree == rhs._tree);
+	}
+
+	template <class T, class Compare, class Alloc>
+	bool operator!=(const set<T, Compare, Alloc>& lhs, const set<T, Compare, Alloc>& rhs)
+	{
+		return !(lhs == rhs);
+	}
+
+	template <class T, class Compare, class Alloc>
+	bool operator<(const set<T, Compare, Alloc>& lhs, const set<T, Compare, Alloc>& rhs)
+	{
+		return (lhs.tree < rhs.tree);
+	}
+
+	template <class T, class Compare, class Alloc>
+	bool operator<=(const set<T, Compare, Alloc>& lhs, const set<T, Compare, Alloc>& rhs)
+	{
+		return !(rhs.tree < lhs.tree);
+	}
+
+	template <class T, class Compare, class Alloc>
+	bool operator>(const set<T, Compare, Alloc>& lhs, const set<T, Compare, Alloc>& rhs)
+	{
+		return (rhs.tree < lhs.tree);
+	}
+
+	template <class T, class Compare, class Alloc>
+	bool operator>=(const set<T, Compare, Alloc>& lhs, const set<T, Compare, Alloc>& rhs)
+	{
+		return !(lhs.tree < rhs.tree);
+	}
 }
 
 #endif

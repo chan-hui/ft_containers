@@ -66,6 +66,14 @@ void map_print(std::string name, ft::map<int, std::string> m)
 	std::cout << "✅ ]\n";
 }
 
+void map_print(std::string name, std::map<int, std::string> m)
+{
+	std::cout << "ft::map " << name << " has [";
+	for (std::map<int, std::string>::iterator it = m.begin(); it != m.end(); ++it)
+		std::cout << "(" << it->first << ", " << it->second << " ";
+	std::cout << "✅ ]\n";
+}
+
 void ft_vector_test_construct()
 {
 
@@ -829,19 +837,519 @@ void ft_map_test_construct()
 	map_print("m3", m3);
 }
 
+void std_map_test_construct()
+{
+	std::map<int, std::string> m;
+	map_print("m", m);
+
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+
+	std::map<int, std::string> m2(m.begin(), m.end());
+	map_print("m2", m2);
+
+	std::map<int, std::string> m3(m2);
+	map_print("m3", m3);
+}
+
 void map_test_construct()
 {
 	std::cout << "---------------- ft::constructor ----------------\n";
 	ft_map_test_construct();
 	std::cout << "\n";
 	std::cout << "---------------- std::constructor ----------------\n";
-	// std_map_test_construct();
+	std_map_test_construct();
+	std::cout << "\n\n";
+}
+
+void ft_map_test_iter()
+{
+	ft::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+
+	map_print("m", m);
+	std::cout << "m.begin() : (" << m.begin()->first << ", " << m.begin()->second << ")\n";
+	ft::map<int, std::string>::iterator temp = m.end();
+	--temp;
+	std::cout << "m.end() : (" << temp->first << ", " << temp->second << ")\n";
+	for (ft::map<int, std::string>::reverse_iterator i = m.rbegin();i != m.rend(); i++)
+	{
+		std::cout << "(" << i->first << ", " << i->second << ") ";
+	}
+	std::cout << "\n";
+}
+
+void std_map_test_iter()
+{
+	std::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+
+	map_print("m", m);
+	std::cout << "m.begin() : (" << m.begin()->first << ", " << m.begin()->second << ")\n";
+	std::map<int, std::string>::iterator temp = m.end();
+	--temp;
+	std::cout << "m.end() : (" << temp->first << ", " << temp->second << ")\n";
+	for (std::map<int, std::string>::reverse_iterator i = m.rbegin();i != m.rend(); i++)
+	{
+		std::cout << "(" << i->first << ", " << i->second << ") ";
+	}
+	std::cout << "\n";
+}
+
+void map_test_iter()
+{
+	std::cout << "---------------- ft::iterator ----------------\n";
+	ft_map_test_iter();
+	std::cout << "\n";
+	std::cout << "---------------- std::iterator ----------------\n";
+	std_map_test_iter();
+	std::cout << "\n\n";
+}
+
+void ft_map_test_size()
+{
+	ft::map<int, std::string> m;
+	map_print("m", m);
+	std::cout << "m.empty() : " << m.empty() << "\n";
+
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+	
+	map_print("m", m);
+	std::cout << "m.empty() : " << m.empty() << "\n";
+	std::cout << "m.size() : " << m.size() << "\n";
+	std::cout << "m.max_size() : " << m.max_size() << "\n";
+}
+
+void std_map_test_size()
+{
+	std::map<int, std::string> m;
+	map_print("m", m);
+	std::cout << "m.empty() : " << m.empty() << "\n";
+
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+	
+	map_print("m", m);
+	std::cout << "m.empty() : " << m.empty() << "\n";
+	std::cout << "m.size() : " << m.size() << "\n";
+	std::cout << "m.max_size() : " << m.max_size() << "\n";
+}
+
+void map_test_size()
+{
+	std::cout << "---------------- ft::size ----------------\n";
+	ft_map_test_size();
+	std::cout << "\n";
+	std::cout << "---------------- std::size ----------------\n";
+	std_map_test_size();
+	std::cout << "\n\n";
+}
+
+void ft_map_test_element()
+{
+	ft::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+	
+	map_print("m", m);
+	std::cout << "m[4] : " << m[4] << "\n";
+}
+
+void std_map_test_element()
+{
+	std::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+	
+	map_print("m", m);
+	std::cout << "m[4] : " << m[4] << "\n";
+}
+
+void map_test_element()
+{
+	std::cout << "---------------- ft::element ----------------\n";
+	ft_map_test_element();
+	std::cout << "\n";
+	std::cout << "---------------- std::element ----------------\n";
+	std_map_test_element();
+	std::cout << "\n\n";
+}
+
+void ft_map_test_insert()
+{
+	ft::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+
+	map_print("m", m);
+
+	std::cout << "m.insert(ft::pair<int, std::string>(4242, \"inserting\"))\n";
+	m.insert(ft::pair<int, std::string>(4242, "inserting"));
+	map_print("m", m);
+
+	// second insert function version (with hint position):
+	ft::map<int, std::string>::iterator it = m.begin();
+	std::cout << "m.insert(it, ft::pair<int, std::string>(24, \"max efficiency inserting\"))\n";
+	std::cout << "m.insert(it, ft::pair<int, std::string>(4422, \"no max efficiency inserting\"))\n";
+	m.insert(it, ft::pair<int, std::string>(24, "max efficiency inserting"));
+	m.insert(it, ft::pair<int, std::string>(4422, "no max efficiency inserting"));
+	map_print("m", m);
+
+	// third insert function version (range insertion):
+	ft::map<int, std::string> m2;
+	std::cout << "m2.insert(m.begin(), m.find(42))\n";
+	m2.insert(m.begin(), m.find(42));
+	map_print("m2", m2);
+}
+
+void std_map_test_insert()
+{
+	std::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+
+	map_print("m", m);
+
+	std::cout << "m.insert(std::pair<int, std::string>(4242, \"inserting\"))\n";
+	m.insert(std::pair<int, std::string>(4242, "inserting"));
+	map_print("m", m);
+
+	// second insert function version (with hint position):
+	std::map<int, std::string>::iterator it = m.begin();
+	std::cout << "m.insert(it, std::pair<int, std::string>(24, \"max efficiency inserting\"))\n";
+	std::cout << "m.insert(it, std::pair<int, std::string>(4422, \"no max efficiency inserting\"))\n";
+	m.insert(it, std::pair<int, std::string>(24, "max efficiency inserting"));
+	m.insert(it, std::pair<int, std::string>(4422, "no max efficiency inserting"));
+	map_print("m", m);
+
+	// third insert function version (range insertion):
+	std::map<int, std::string> m2;
+	std::cout << "m2.insert(m.begin(), m.find(42))\n";
+	m2.insert(m.begin(), m.find(42));
+	map_print("m2", m2);
+}
+
+void map_test_insert()
+{
+	std::cout << "---------------- ft::insert ----------------\n";
+	ft_map_test_insert();
+	std::cout << "\n";
+	std::cout << "---------------- std::insert ----------------\n";
+	std_map_test_insert();
+	std::cout << "\n\n";
+}
+
+void ft_map_test_erase()
+{
+	ft::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+	m[4242] = "random quote here";
+	m[4422] = "final string";
+	m[424242] = "extra one";
+
+	map_print("m", m);
+
+	m.erase(m.begin());
+	std::cout << "m.erase(m.begin())\n";
+	map_print("m", m);
+
+	m.erase(4242);
+	std::cout << "m.erase(4242)\n";
+	map_print("m", m);
+
+	m.erase(m.find(4), m.find(4422));
+	std::cout << "m.erase(m.find(4), m.find(4422))\n";
+	map_print("m", m);
+}
+
+void std_map_test_erase()
+{
+	std::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+	m[4242] = "random quote here";
+	m[4422] = "final string";
+	m[424242] = "extra one";
+
+	map_print("m", m);
+
+	m.erase(m.begin());
+	std::cout << "m.erase(m.begin())\n";
+	map_print("m", m);
+
+	m.erase(4242);
+	std::cout << "m.erase(4242)\n";
+	map_print("m", m);
+
+	m.erase(m.find(4), m.find(4422));
+	std::cout << "m.erase(m.find(4), m.find(4422))\n";
+	map_print("m", m);
+}
+
+void map_test_erase()
+{
+	std::cout << "---------------- ft::erase ----------------\n";
+	ft_map_test_erase();
+	std::cout << "\n";
+	std::cout << "---------------- std::erase ----------------\n";
+	std_map_test_erase();
+	std::cout << "\n\n";
+}
+
+void ft_map_test_swap()
+{
+	ft::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+
+	ft::map<int, std::string> m2;
+	m2[4242] = "random quote here";
+	m2[4422] = "final string";
+	m2[424242] = "extra one";
+
+	map_print("m", m);
+	map_print("m2", m2);
+
+	m.swap(m2);
+	std::cout << "m.swap(m2)\n";
+
+	map_print("m", m);
+	map_print("m2", m2);
+}
+
+void std_map_test_swap()
+{
+	std::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+
+	std::map<int, std::string> m2;
+	m2[4242] = "random quote here";
+	m2[4422] = "final string";
+	m2[424242] = "extra one";
+
+	map_print("m", m);
+	map_print("m2", m2);
+
+	m.swap(m2);
+	std::cout << "m.swap(m2)\n";
+
+	map_print("m", m);
+	map_print("m2", m2);
+}
+
+void map_test_swap()
+{
+	std::cout << "---------------- ft::swap ----------------\n";
+	ft_map_test_swap();
+	std::cout << "\n";
+	std::cout << "---------------- std::swap ----------------\n";
+	std_map_test_swap();
+	std::cout << "\n\n";
+}
+
+void ft_map_test_clear()
+{
+	ft::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+	
+	map_print("m", m);
+
+	m.clear();
+	std::cout << "m.clear()\n";
+	map_print("m", m);
+}
+
+void std_map_test_clear()
+{
+	std::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+	
+	map_print("m", m);
+
+	m.clear();
+	std::cout << "m.clear()\n";
+	map_print("m", m);
+}
+
+void map_test_clear()
+{
+	std::cout << "---------------- ft::clear ----------------\n";
+	ft_map_test_clear();
+	std::cout << "\n";
+	std::cout << "---------------- std::clear ----------------\n";
+	std_map_test_clear();
+	std::cout << "\n\n";
+}
+
+void ft_map_test_find()
+{
+	ft::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+	
+	map_print("m", m);
+
+	std::cout << "m.find(4)->second : " << m.find(4)->second << "\n";
+	std::cout << "m.find(42)->second : " << m.find(42)->second << "\n";
+	std::cout << "m.find(4242)->second : " << m.find(4242)->second << "\n";
+
+	std::cout << "m.count(4) : " << m.count(4) << "\n";
+	std::cout << "m.count(42) : " << m.count(42) << "\n";
+	std::cout << "m.count(4242) : " << m.count(4242) << "\n";
+}
+
+void std_map_test_find()
+{
+	std::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+	
+	map_print("m", m);
+
+	std::cout << "m.find(4)->second : " << m.find(4)->second << "\n";
+	std::cout << "m.find(42)->second : " << m.find(42)->second << "\n";
+	std::cout << "m.find(4242)->second : " << m.find(4242)->second << "\n";
+
+	std::cout << "m.count(4) : " << m.count(4) << "\n";
+	std::cout << "m.count(42) : " << m.count(42) << "\n";
+	std::cout << "m.count(4242) : " << m.count(4242) << "\n";
+}
+
+void map_test_find()
+{
+	std::cout << "---------------- ft::find ----------------\n";
+	ft_map_test_find();
+	std::cout << "\n";
+	std::cout << "---------------- std::find ----------------\n";
+	std_map_test_find();
+	std::cout << "\n\n";
+}
+
+void ft_map_test_bound()
+{
+	ft::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+	m[4242] = "random quote here";
+	m[4422] = "final string";
+	m[424242] = "extra one";
+	
+	map_print("m", m);
+
+	for (ft::map<int, std::string>::iterator it = m.lower_bound(10); it != m.upper_bound(5000); ++it)
+    	std::cout << "(" << it->first << ", " << it->second << ")\n";
+}
+
+void std_map_test_bound()
+{
+	std::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+	m[4242] = "random quote here";
+	m[4422] = "final string";
+	m[424242] = "extra one";
+	
+	map_print("m", m);
+
+	for (std::map<int, std::string>::iterator it = m.lower_bound(10); it != m.upper_bound(5000); ++it)
+    	std::cout << "(" << it->first << ", " << it->second << ")\n";
+}
+
+void map_test_bound()
+{
+	std::cout << "---------------- ft::bound ----------------\n";
+	ft_map_test_bound();
+	std::cout << "\n";
+	std::cout << "---------------- std::bound ----------------\n";
+	std_map_test_bound();
+	std::cout << "\n\n";
+}
+
+void ft_map_test_equal_range()
+{
+	ft::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+	m[4242] = "random quote here";
+	m[4422] = "final string";
+	m[424242] = "extra one";
+	
+	map_print("m", m);
+
+	std::cout << "lower bound to 42\n";
+	std::cout << "(" << m.equal_range(42).first->first << ", " << m.equal_range(42).first->second << ")\n";
+	std::cout << "upper bound to 42\n";
+	std::cout << "(" << m.equal_range(42).second->first << ", " << m.equal_range(42).second->second << ")\n";
+}
+
+void std_map_test_equal_range()
+{
+	std::map<int, std::string> m;
+	m[2] = "42Seoul";
+	m[4] = "Hello, World!";
+	m[42] = "lorem ipsum";
+	m[4242] = "random quote here";
+	m[4422] = "final string";
+	m[424242] = "extra one";
+	
+	map_print("m", m);
+
+	std::cout << "lower bound to 42\n";
+	std::cout << "(" << m.equal_range(42).first->first << ", " << m.equal_range(42).first->second << ")\n";
+	std::cout << "upper bound to 42\n";
+	std::cout << "(" << m.equal_range(42).second->first << ", " << m.equal_range(42).second->second << ")\n";
+}
+
+void map_test_equal_range()
+{
+	std::cout << "---------------- ft::equal_range ----------------\n";
+	ft_map_test_equal_range();
+	std::cout << "\n";
+	std::cout << "---------------- std::equal_range ----------------\n";
+	std_map_test_equal_range();
 	std::cout << "\n\n";
 }
 
 void map_test()
 {
 	map_test_construct();
+	// map_test_iter();
+	// map_test_size();
+	// map_test_element();
+	// map_test_insert();
+	// map_test_erase();
+	// map_test_swap();
+	// map_test_clear();
+	// map_test_find();
+	// map_test_bound();
+	// map_test_equal_range();
 }
 
 int main()
