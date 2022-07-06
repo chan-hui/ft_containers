@@ -6,7 +6,7 @@
 /*   By: chanhuil <chanhuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 01:58:20 by chanhuil          #+#    #+#             */
-/*   Updated: 2022/07/04 18:49:00 by chanhuil         ###   ########.fr       */
+/*   Updated: 2022/07/06 19:02:56 by chanhuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,18 @@ void vector_iterator_print(std::string name, std::vector<int>::reverse_iterator 
 
 void map_print(std::string name, ft::map<int, std::string> m)
 {
-	std::cout << "ft::map " << name << " has [";
+	std::cout << "ft::map " << name << " has [ ";
 	for (ft::map<int, std::string>::iterator it = m.begin(); it != m.end(); ++it)
-		std::cout << "(" << it->first << ", " << it->second << " ";
-	std::cout << "✅ ]\n";
+		std::cout << "(" << it->first << ", " << it->second << ") ";
+	std::cout << "(✅ ) ]\n";
 }
 
 void map_print(std::string name, std::map<int, std::string> m)
 {
-	std::cout << "ft::map " << name << " has [";
+	std::cout << "ft::map " << name << " has [ ";
 	for (std::map<int, std::string>::iterator it = m.begin(); it != m.end(); ++it)
-		std::cout << "(" << it->first << ", " << it->second << " ";
-	std::cout << "✅ ]\n";
+		std::cout << "(" << it->first << ", " << it->second << ") ";
+	std::cout << "(✅ ) ]\n";
 }
 
 void ft_vector_test_construct()
@@ -846,6 +846,7 @@ void std_map_test_construct()
 	m[4] = "Hello, World!";
 	m[42] = "lorem ipsum";
 
+
 	std::map<int, std::string> m2(m.begin(), m.end());
 	map_print("m2", m2);
 
@@ -1064,8 +1065,13 @@ void ft_map_test_erase()
 	map_print("m", m);
 
 	m.erase(m.begin());
-	std::cout << "m.erase(m.begin())\n";
-	map_print("m", m);
+	// std::cout << "m.erase(m.begin())\n";
+	// map_print("m", m);
+
+	for (ft::map<int, std::string>::iterator it = m.begin(); it != m.end(); it++)
+	{
+		std::cout << "Node " << it->first << "(" << it.base() << ") - " << it->second << "\n";
+	}
 
 	m.erase(4242);
 	std::cout << "m.erase(4242)\n";
@@ -1214,7 +1220,6 @@ void ft_map_test_find()
 
 	std::cout << "m.find(4)->second : " << m.find(4)->second << "\n";
 	std::cout << "m.find(42)->second : " << m.find(42)->second << "\n";
-	std::cout << "m.find(4242)->second : " << m.find(4242)->second << "\n";
 
 	std::cout << "m.count(4) : " << m.count(4) << "\n";
 	std::cout << "m.count(42) : " << m.count(42) << "\n";
@@ -1232,7 +1237,6 @@ void std_map_test_find()
 
 	std::cout << "m.find(4)->second : " << m.find(4)->second << "\n";
 	std::cout << "m.find(42)->second : " << m.find(42)->second << "\n";
-	std::cout << "m.find(4242)->second : " << m.find(4242)->second << "\n";
 
 	std::cout << "m.count(4) : " << m.count(4) << "\n";
 	std::cout << "m.count(42) : " << m.count(42) << "\n";
@@ -1339,12 +1343,12 @@ void map_test_equal_range()
 
 void map_test()
 {
-	map_test_construct();
+	// map_test_construct();
 	// map_test_iter();
 	// map_test_size();
 	// map_test_element();
 	// map_test_insert();
-	// map_test_erase();
+	map_test_erase();
 	// map_test_swap();
 	// map_test_clear();
 	// map_test_find();
@@ -1352,12 +1356,14 @@ void map_test()
 	// map_test_equal_range();
 }
 
+namespace TESTED_NAMESPACE = ft;
+
 int main()
-{
-	std::cout << "================ Vector Test ================\n\n";
-	vector_test();
-	std::cout << "================ Stack Test ================\n\n";
-	stack_test();
+{	
+	// std::cout << "================ Vector Test ================\n\n";
+	// vector_test();
+	// std::cout << "================ Stack Test ================\n\n";
+	// stack_test();
 	std::cout << "================ Map Test ================\n\n";
 	map_test();
 	// system("leaks ft_containers");

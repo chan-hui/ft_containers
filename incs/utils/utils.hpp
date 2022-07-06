@@ -6,7 +6,7 @@
 /*   By: chanhuil <chanhuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/01 00:00:48 by chanhuil          #+#    #+#             */
-/*   Updated: 2022/06/01 00:00:48 by chanhuil         ###   ########.fr       */
+/*   Updated: 2022/07/06 18:15:44 by chanhuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,12 @@ namespace ft
 	{
 		return ( ft::pair<T1,T2>(x,y) );
 	}
+
+	template <typename T>
+	struct remove_const { typedef T type; };
+	
+	template <typename T>
+	struct remove_const < const T > { typedef T type; };
 }
 
 #endif

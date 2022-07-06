@@ -6,7 +6,7 @@
 /*   By: chanhuil <chanhuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 04:51:59 by chanhuil          #+#    #+#             */
-/*   Updated: 2022/07/04 18:55:09 by chanhuil         ###   ########.fr       */
+/*   Updated: 2022/07/06 19:09:08 by chanhuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ namespace ft
 			typedef size_t													size_type;
 			typedef typename Alloc::template rebind<Node<T> >::other		node_alloc;
 			typedef typename node_alloc::pointer							node_pointer;
+			typedef Node<const T>*											const_node_pointer;
 
 			red_black_tree()
 				:
@@ -46,6 +47,7 @@ namespace ft
 				_nalloc(node_alloc()),
 				_comp(value_compare()),
 				_root(ft_nullptr),
+				_temp(ft_nullptr),
 				_size(0)
 			{
 				initialize();
@@ -58,6 +60,7 @@ namespace ft
 				_nalloc(node_alloc()),
 				_comp(comp),
 				_root(ft_nullptr),
+				_temp(ft_nullptr),
 				_size(0)
 			{
 				initialize();
@@ -72,6 +75,7 @@ namespace ft
 				_nalloc(node_alloc()),
 				_comp(comp),
 				_root(ft_nullptr),
+				_temp(ft_nullptr),
 				_size(0)
 			{
 				initialize();
@@ -82,7 +86,7 @@ namespace ft
 
 			red_black_tree(const red_black_tree& tree)
 				:
-				_comp(value_compare())
+				_comp(tree._comp)
 			{
 				*this = tree;
 			}
@@ -95,6 +99,7 @@ namespace ft
 				_nalloc = tree._nalloc;
 				_comp = tree._comp;
 				_size = tree._size;
+				_temp = ft_nullptr;
 				if (!_root)
 					initialize();
 				else
@@ -103,13 +108,19 @@ namespace ft
 				if (tree._size == 0)
 					_root = _end;
 				else
-					_root = node_dup_rec(tree._root);
+					_root = node_dup_rec(tree._root, ft_nullptr, tree._end);
+
+				node_pointer temp_end = maximum(_root);
+				temp_end->right = _end;
+				_end->p = temp_end;
+
 				return *this;
 			}
 
 			~red_black_tree()
 			{
-				free_node(_root);
+				if(!empty())
+					free_tree(_root);
 				_alloc.destroy(_end->v);
 				_alloc.deallocate(_end->v, 1);
 				_nalloc.deallocate(_end, 1);
@@ -141,22 +152,22 @@ namespace ft
 
 			reverse_iterator rbegin()
 			{
-				reverse_iterator(end());
+				return reverse_iterator(end());
 			}
 
 			const_reverse_iterator rbegin() const
 			{
-				const_reverse_iterator(end());
+				return const_reverse_iterator(end());
 			}
 
 			reverse_iterator rend()
 			{
-				reverse_iterator(begin());
+				return reverse_iterator(begin());
 			}
 
 			const_reverse_iterator rend() const
 			{
-				const_reverse_iterator(begin());
+				return const_reverse_iterator(begin());
 			}
 
 			bool empty() const
@@ -169,15 +180,10 @@ namespace ft
 				return _size;
 			}
 
-			size_type max_size() const
-			{
-				return _alloc.max_size();
-			}
-
 			ft::pair<iterator,bool> insert (const value_type& val)
 			{
 				node_pointer check = find_node(val, _root);
-				if (check)
+				if (!nil(check))
 					return ft::pair<iterator, bool>(iterator(check), false);
 				node_pointer temp = _nalloc.allocate(1);
 				_nalloc.construct(temp, Node<value_type>(alloc_value(val)));
@@ -195,7 +201,7 @@ namespace ft
 			iterator insert (iterator position, const value_type& val)
 			{
 				node_pointer check = find_node(val, _root);
-				if (check)
+				if (!nil(check))
 					return iterator(check);
 				node_pointer temp = _nalloc.allocate(1);
 				_nalloc.construct(temp, Node<value_type>(alloc_value(val)));
@@ -227,22 +233,44 @@ namespace ft
 				node_pointer y = position.base();
 				node_pointer x = ft_nullptr;
 				bool is_black = y->black;
+				
+				std::cout << _root << "|" << _root->black << "\n";
+
 				if (nil(y->left))
 				{
+					if (!(y->right))
+					{
+						y->right = init_temp();
+						_temp->p = y;
+						_temp->black = true;
+					}
 					x = y->right;
 					transplant(y, y->right);
 				}
 				else if (nil(y->right))
 				{
+					if (!(y->left))
+					{
+						y->left = init_temp();
+						_temp->p = y;
+						_temp->black = true;
+					}
 					x = y->left;
 					transplant(y, y->left);
 				}
 				else
 				{
-					node_pointer temp = y->right;
-					node_pointer temp_min = minimum(temp);
+					std::cout << "holy fuck\n";
+					node_pointer temp = y->right; //4422
+					node_pointer temp_min = minimum(temp); //4422
 					is_black = temp_min->black;
-					x = temp_min->right;
+					if (!(temp_min->right))
+					{
+						temp_min->right = init_temp();
+						_temp->p = temp_min;
+						_temp->black = true;
+					}
+					x = temp_min->right; // 9999
 					if (temp_min->p != temp)
 					{
 						transplant(temp_min, temp_min->right);
@@ -251,12 +279,16 @@ namespace ft
 					}
 					transplant(temp, temp_min);
 					temp_min->left = temp->left;
-					temp_min->left->p = temp_min;
+					temp_min->left->p = temp_min; // seg_fault
 					temp_min->black = temp->black;
 				}
 				free_node(y);
 				if (is_black)
+				{
 					_erase_fix(x);
+				}
+				if (_temp)
+					dest_temp();
 				_size--;
 				if (_size == 0)
 					_root = _end;
@@ -379,6 +411,11 @@ namespace ft
 				return (end());
 			}
 
+			pair<const_iterator,const_iterator>	equal_range (const value_type& k) const
+			{
+				return ft::make_pair(lower_bound(k), upper_bound(k));
+			}
+
 			pair<iterator,iterator>	equal_range (const value_type& k)
 			{
 				return ft::make_pair(lower_bound(k), upper_bound(k));
@@ -388,18 +425,19 @@ namespace ft
 			{
 				return _alloc;
 			}
-
+			
 		private:
 			allocator_type	_alloc;
 			node_alloc		_nalloc;
 			value_compare	_comp;
 			node_pointer	_root;
 			node_pointer	_end;
+			node_pointer	_temp;
 			size_type		_size;
 
-			bool nil(node_pointer n)
+			bool nil(node_pointer n) const
 			{
-				if (!n || n == _end)
+				if (!n || n == _end || n == _temp)
 					return true;
 				return false;
 			}
@@ -413,14 +451,14 @@ namespace ft
 				_end->black = true;
 			}
 
-			node_pointer minimum(node_pointer n)
+			node_pointer minimum(node_pointer n) const
 			{
 				while (n && !nil(n->left))
 					n = n->left;
 				return n;
 			}
 
-			node_pointer maximum(node_pointer n)
+			node_pointer maximum(node_pointer n) const
 			{
 				while (n && !nil(n->right))
 					n = n->right;
@@ -525,7 +563,7 @@ namespace ft
 				n->p = origin->p;
 			}
 
-			node_pointer find_node(const value_type& value, node_pointer n)
+			node_pointer find_node(const value_type& value, node_pointer n) const
 			{
 				if (nil(n))
 					return _end;
@@ -536,9 +574,9 @@ namespace ft
 				return n;
 			}
 
-			node_pointer node_dup(node_pointer n)
+			node_pointer node_dup(node_pointer n, node_pointer e)
 			{
-				if (!n)
+				if (!n || n == e)
 					return ft_nullptr;
 				node_pointer temp = _nalloc.allocate(1);
 				_nalloc.construct(temp, Node<T>());
@@ -551,13 +589,14 @@ namespace ft
 				return temp;
 			}
 
-			node_pointer node_dup_rec(node_pointer n)
+			node_pointer node_dup_rec(node_pointer n, node_pointer p, node_pointer e)
 			{
-				node_pointer temp = node_dup(n);
+				node_pointer temp = node_dup(n, e);
 				if (temp)
 				{
-					temp->left = node_dup_rec(n->left);
-					temp->right = node_dup_rec(n->right);
+					temp->p = p;
+					temp->left = node_dup_rec(n->left, temp, e);
+					temp->right = node_dup_rec(n->right, temp, e);
 				}
 				return temp;
 			}
@@ -628,6 +667,7 @@ namespace ft
 			void _erase_fix(node_pointer n)
 			{
 				node_pointer brother = ft_nullptr;
+				
 				while (n != _root && n->black)
 				{
 					if (n == n->p->left)
@@ -694,12 +734,37 @@ namespace ft
 					}
 				}
 			}
+
+			node_pointer init_temp()
+			{
+				_temp = _nalloc.allocate(1);
+				_nalloc.construct(_temp, Node<T>());
+				_temp->v = _alloc.allocate(1);
+				_alloc.construct(_temp->v, T());
+				_temp->black = true;
+				return _temp;
+			}
+
+			void dest_temp()
+			{
+				if (_temp->p)
+				{
+					if (_temp->p->left == _temp)
+						_temp->p->left = ft_nullptr;
+					else
+						_temp->p->right = ft_nullptr;
+				}
+				_alloc.destroy(_temp->v);
+				_alloc.deallocate(_temp->v, 1);
+				_nalloc.deallocate(_temp, 1);
+				_temp = ft_nullptr;
+			}
 	};
 
 	template<class T, class Compare, class Alloc>
 	bool operator==(const red_black_tree<T, Compare, Alloc>& lhs, const red_black_tree<T, Compare, Alloc>& rhs)
 	{
-		return (lhs.size() == rhs.size() && std::equal(lhs.begin(), lhs.end(), rhs.begin()));
+		return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
 	}
 
 	template<class T, class Compare, class Alloc>

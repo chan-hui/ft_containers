@@ -6,7 +6,7 @@
 /*   By: chanhuil <chanhuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/22 00:21:22 by chanhuil          #+#    #+#             */
-/*   Updated: 2022/06/22 00:21:22 by chanhuil         ###   ########.fr       */
+/*   Updated: 2022/07/06 17:48:26 by chanhuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ namespace ft
 			typedef typename ft::iterator<ft::bidirectional_iterator_tag, T>::value_type		value_type;
 			typedef T*																			pointer;
 			typedef T&																			reference;
-			typedef Node<value_type>*															node_pointer;
+			typedef Node<typename ft::remove_const<value_type>::type>*															node_pointer;
 
 			map_iterator()
 				: _p(ft_nullptr)
@@ -129,6 +129,9 @@ namespace ft
 				return temp;
 			}
 
+			operator map_iterator<const T> () const
+            { return (map_iterator<const T>(this->_p)); }
+
 		private:
 			node_pointer _p;
 			
@@ -154,9 +157,23 @@ namespace ft
 		return (lhs.base() == rhs.base());
 	}
 
+	template <class TL, class TR>
+	bool operator== (const map_iterator<TL>& lhs,
+					const map_iterator<TR>& rhs)
+	{
+		return (lhs.base() == rhs.base());
+	}
+
 	template <class T>
 	bool operator!= (const map_iterator<T>& lhs,
 					const map_iterator<T>& rhs)
+	{
+		return (lhs.base() != rhs.base());
+	}
+
+	template <class TL, class TR>
+	bool operator!= (const map_iterator<TL>& lhs,
+					const map_iterator<TR>& rhs)
 	{
 		return (lhs.base() != rhs.base());
 	}

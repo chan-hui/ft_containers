@@ -6,7 +6,7 @@
 /*   By: chanhuil <chanhuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 23:18:34 by chanhuil          #+#    #+#             */
-/*   Updated: 2022/07/04 18:54:47 by chanhuil         ###   ########.fr       */
+/*   Updated: 2022/07/06 17:59:15 by chanhuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ namespace ft
 				protected:
 					key_compare comp;
 				public:
+					value_compare () : comp(key_compare()) {}
 					value_compare (key_compare c) : comp(c) {}
 					bool operator() (const value_type& x, const value_type& y) const
 					{
@@ -73,6 +74,8 @@ namespace ft
 			{}
 
 			map (const map& x)
+				:
+				_comp(key_compare())
 			{
 				*this = x;
 			}
@@ -86,6 +89,7 @@ namespace ft
 					return *this;
 				_tree = x._tree;
 				_comp = x._comp;
+				return *this;
 			}
 
 			iterator begin()
@@ -140,7 +144,7 @@ namespace ft
 
 			size_type max_size() const
 			{
-				return (_tree.max_size());
+				return allocator_type().max_size();
 			}
 
 			mapped_type& operator[] (const key_type& k)
@@ -205,53 +209,60 @@ namespace ft
 
 			iterator find (const key_type& k)
 			{
-				return _tree.find(make_pair(k, mapped_type()));
+				return _tree.find(ft::make_pair(k, mapped_type()));
 			}
 
 			const_iterator find (const key_type& k) const
 			{
-				return _tree.find(make_pair(k, mapped_type()));
+				return _tree.find(ft::make_pair(k, mapped_type()));
 			}
 
 			size_type count (const key_type& k) const
 			{
-				return _tree.count(make_pair(k, mapped_type()));
+				return _tree.count(ft::make_pair(k, mapped_type()));
 			}
 
 			iterator lower_bound (const key_type& k)
 			{
-				return _tree.lower_bound(make_pair(k, mapped_type()));
+				return _tree.lower_bound(ft::make_pair(k, mapped_type()));
 			}
 
 			const_iterator lower_bound (const key_type& k) const
 			{
-				return _tree.lower_bound(make_pair(k, mapped_type()));
+				return _tree.lower_bound(ft::make_pair(k, mapped_type()));
 			}
 
 			iterator upper_bound (const key_type& k)
 			{
-				return _tree.upper_bound(make_pair(k, mapped_type()));
+				return _tree.upper_bound(ft::make_pair(k, mapped_type()));
 			}
 
 			const_iterator upper_bound (const key_type& k) const
 			{
-				return _tree.upper_bound(make_pair(k, mapped_type()));
+				return _tree.upper_bound(ft::make_pair(k, mapped_type()));
 			}
 
 			pair<const_iterator,const_iterator> equal_range (const key_type& k) const
 			{
-				return _tree.equal_range(make_pair(k, mapped_type()));
+				return _tree.equal_range(ft::make_pair(k, mapped_type()));
 			}
 
 			pair<iterator,iterator>             equal_range (const key_type& k)
 			{
-				return _tree.equal_range(make_pair(k, mapped_type()));
+				return _tree.equal_range(ft::make_pair(k, mapped_type()));
 			}
 
 			allocator_type get_allocator() const
 			{
 				return _tree.get_allocator();
 			}
+
+			template <class KeyF, class TF, class CompareF, class AllocF>
+			friend bool operator==(const map<KeyF, TF, CompareF, AllocF>& lhs, const map<KeyF, TF, CompareF, AllocF>& rhs);
+
+			template <class KeyF, class TF, class CompareF, class AllocF>
+			friend bool operator<(const map<KeyF, TF, CompareF, AllocF>& lhs, const map<KeyF, TF, CompareF, AllocF>& rhs);
+			
 		private:
 			tree_type			_tree;
 			key_compare			_comp;
@@ -272,25 +283,25 @@ namespace ft
 	template <class Key, class T, class Compare, class Alloc>
 	bool operator<(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
 	{
-		return (lhs.tree < rhs.tree);
-	}
-
-	template <class Key, class T, class Compare, class Alloc>
-	bool operator<=(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
-	{
-		return !(rhs.tree < lhs.tree);
+		return (lhs._tree < rhs._tree);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	bool operator>(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
 	{
-		return (rhs.tree < lhs.tree);
+		return (rhs < lhs);
+	}
+
+	template <class Key, class T, class Compare, class Alloc>
+	bool operator<=(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
+	{
+		return !(rhs < lhs);
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
 	bool operator>=(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)
 	{
-		return !(lhs.tree < rhs.tree);
+		return !(lhs < rhs);
 	}
 }
 
