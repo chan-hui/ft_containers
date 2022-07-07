@@ -6,7 +6,7 @@
 /*   By: chanhuil <chanhuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 04:51:59 by chanhuil          #+#    #+#             */
-/*   Updated: 2022/07/06 19:09:08 by chanhuil         ###   ########.fr       */
+/*   Updated: 2022/07/07 15:01:11 by chanhuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ namespace ft
 
 			red_black_tree& operator=(const red_black_tree& tree)
 			{
-				if (tree == *this)
-					return *this;
+				// if (tree == *this)
+				// 	return *this;
 				_alloc = tree._alloc;
 				_nalloc = tree._nalloc;
 				_comp = tree._comp;
@@ -238,8 +238,6 @@ namespace ft
 				node_pointer y = position.base();
 				node_pointer x = ft_nullptr;
 				bool is_black = y->black;
-				
-				std::cout << _root << "|" << _root->black << "\n";
 
 				if (nil(y->left))
 				{
@@ -307,7 +305,7 @@ namespace ft
 			size_type erase (const value_type& k)
 			{
 				node_pointer temp = find_node(k, _root);
-				if (temp)
+				if (!nil(temp))
 				{
 					erase(iterator(temp));
 					return (1);
@@ -317,8 +315,8 @@ namespace ft
 
 			void erase (iterator first, iterator last)
 			{
-				for (;first != last;first++)
-					erase(first);
+				for (;first != last;)
+					erase(first++);
 			}
 
 			void swap (red_black_tree& x)
@@ -679,6 +677,8 @@ namespace ft
 						brother = n->p->right;
 						if (brother && !brother->black)
 						{
+							// std::cout << "Case 1\n";
+
 							brother->black = true;
 							n->p->black = false;
 							rotate_left(n->p);
@@ -686,6 +686,8 @@ namespace ft
 						}
 						if ((!brother->left || brother->left->black) && (!brother->right || brother->right->black))
 						{
+							// std::cout << "Case 2\n";
+							
 							brother->black = false;
 							n = n->p;
 						}
@@ -693,11 +695,16 @@ namespace ft
 						{
 							if (!brother->right || brother->right->black)
 							{
+								// std::cout << "Case 3\n";
+
 								brother->left->black = true;
 								brother->black = false;
 								rotate_right(brother);
 								brother = n->p->right;
 							}
+
+							// std::cout << "Case 4\n";
+
 							brother->black = n->p->black;
 							n->p->black = true;
 							brother->right->black = true;
@@ -737,6 +744,8 @@ namespace ft
 						}
 					}
 				}
+				n->black = true;
+				// print_tree(_root, "");
 			}
 
 			node_pointer init_temp()
@@ -762,6 +771,15 @@ namespace ft
 				_alloc.deallocate(_temp->v, 1);
 				_nalloc.deallocate(_temp, 1);
 				_temp = ft_nullptr;
+			}
+
+			void print_tree(node_pointer n, std::string pre)
+			{
+				if (!n)
+					return ;
+				std::cout << pre << n->v->first << "[" << (n->black ? "K" : "R") << "](" << n << ") : " << n->v->second << "\n";
+				print_tree(n->left, pre + "-");
+				print_tree(n->right, pre + "-");
 			}
 	};
 

@@ -6,7 +6,7 @@
 /*   By: chanhuil <chanhuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 01:58:20 by chanhuil          #+#    #+#             */
-/*   Updated: 2022/07/06 19:02:56 by chanhuil         ###   ########.fr       */
+/*   Updated: 2022/07/07 15:03:29 by chanhuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -1065,13 +1065,8 @@ void ft_map_test_erase()
 	map_print("m", m);
 
 	m.erase(m.begin());
-	// std::cout << "m.erase(m.begin())\n";
-	// map_print("m", m);
-
-	for (ft::map<int, std::string>::iterator it = m.begin(); it != m.end(); it++)
-	{
-		std::cout << "Node " << it->first << "(" << it.base() << ") - " << it->second << "\n";
-	}
+	std::cout << "m.erase(m.begin())\n";
+	map_print("m", m);
 
 	m.erase(4242);
 	std::cout << "m.erase(4242)\n";
@@ -1343,27 +1338,25 @@ void map_test_equal_range()
 
 void map_test()
 {
-	// map_test_construct();
-	// map_test_iter();
-	// map_test_size();
-	// map_test_element();
-	// map_test_insert();
+	map_test_construct();
+	map_test_iter();
+	map_test_size();
+	map_test_element();
+	map_test_insert();
 	map_test_erase();
-	// map_test_swap();
-	// map_test_clear();
-	// map_test_find();
-	// map_test_bound();
-	// map_test_equal_range();
+	map_test_swap();
+	map_test_clear();
+	map_test_find();
+	map_test_bound();
+	map_test_equal_range();
 }
-
-namespace TESTED_NAMESPACE = ft;
 
 int main()
 {	
-	// std::cout << "================ Vector Test ================\n\n";
-	// vector_test();
-	// std::cout << "================ Stack Test ================\n\n";
-	// stack_test();
+	std::cout << "================ Vector Test ================\n\n";
+	vector_test();
+	std::cout << "================ Stack Test ================\n\n";
+	stack_test();
 	std::cout << "================ Map Test ================\n\n";
 	map_test();
 	// system("leaks ft_containers");
