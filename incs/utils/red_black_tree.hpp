@@ -260,9 +260,8 @@ namespace ft
 				}
 				else
 				{
-					std::cout << "holy fuck\n";
-					node_pointer temp = y->right; //4422
-					node_pointer temp_min = minimum(temp); //4422
+					node_pointer temp = y;
+					node_pointer temp_min = minimum(temp->right);
 					is_black = temp_min->black;
 					if (!(temp_min->right))
 					{
@@ -270,7 +269,7 @@ namespace ft
 						_temp->p = temp_min;
 						_temp->black = true;
 					}
-					x = temp_min->right; // 9999
+					x = temp_min->right;
 					if (temp_min->p != temp)
 					{
 						transplant(temp_min, temp_min->right);
@@ -279,7 +278,7 @@ namespace ft
 					}
 					transplant(temp, temp_min);
 					temp_min->left = temp->left;
-					temp_min->left->p = temp_min; // seg_fault
+					temp_min->left->p = temp_min;
 					temp_min->black = temp->black;
 				}
 				free_node(y);
