@@ -180,6 +180,11 @@ namespace ft
 				return _size;
 			}
 
+			size_type max_size() const
+			{
+				return _nalloc.max_size();
+			}
+
 			ft::pair<iterator,bool> insert (const value_type& val)
 			{
 				node_pointer check = find_node(val, _root);
