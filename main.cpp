@@ -6,7 +6,7 @@
 /*   By: chanhuil <chanhuil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/03 01:58:20 by chanhuil          #+#    #+#             */
-/*   Updated: 2022/07/07 15:03:29 by chanhuil         ###   ########.fr       */
+/*   Updated: 2022/07/07 15:08:02 by chanhuil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,10 @@
 #include <vector>
 #include <stack>
 #include <map>
-#include <set>
 
 #include "./incs/vector.hpp"
 #include "./incs/stack.hpp"
 #include "./incs/map.hpp"
-#include "./incs/set.hpp"
 
 void vector_print(std::string name, ft::vector<int> v)
 {
