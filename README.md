@@ -1,2 +1,2 @@
 # ft_containers
-what the fuck man
+project about c++'s STL (Standard Template Library)
